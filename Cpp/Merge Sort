@@ -1,0 +1,49 @@
+class Solution {
+public:
+    void mergesort(vector<int>& nums, int start, int end) {
+        if (end <= start) {
+            return;
+        }
+        int mid = (start + end) / 2;
+        mergesort(nums, start, mid);
+        mergesort(nums, mid + 1, end);
+        merge(nums, start, end, mid);
+    }
+
+    void merge(vector<int>& nums, int start, int end, int mid) {
+        int n1 = mid - start + 1, n2 = end - mid;
+        vector<int> first(n1);
+        vector<int> second(n2);
+
+        // Copy elements from nums to first and second
+        for (int i = 0; i < n1; i++) {
+            first[i] = nums[start + i];
+        }
+        for (int i = 0; i < n2; i++) {
+            second[i] = nums[mid + 1 + i];
+        }
+
+        // Merge the two sorted arrays
+        int i = 0, j = 0, k = start;
+        while (i < n1 && j < n2) {
+            if (first[i] <= second[j]) {
+                nums[k++] = first[i++];
+            } else {
+                nums[k++] = second[j++];
+            }
+        }
+
+        // Copy any remaining elements from first and second
+        while (i < n1) {
+            nums[k++] = first[i++];
+        }
+        while (j < n2) {
+            nums[k++] = second[j++];
+        }
+    }
+
+    vector<int> sortArray(vector<int>& nums) {
+        mergesort(nums, 0, nums.size() - 1);
+        return nums;
+    }
+};
